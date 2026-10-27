@@ -31,3 +31,20 @@ def delete_city(db: Session, city_id: int):
 
 def get_city_detail(db: Session, city_id: int):
     return db.query(models.DBCity).filter(models.DBCity.id == city_id).first()
+
+
+def update_city(db: Session, city_id: int, city: schemas.CityUpdate):
+    db_city = db.query(models.DBCity).filter(models.DBCity.id == city_id).first()
+
+    if not db_city:
+        return None
+
+    city_dict = city.model_dump()
+
+    for key, value in city_dict.items():
+        setattr(db_city, key, value)
+
+    db.commit()
+    db.refresh(db_city)
+
+    return db_city

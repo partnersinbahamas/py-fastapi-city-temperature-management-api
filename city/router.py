@@ -47,3 +47,13 @@ def get_city_detail(city_id: int, db: SessionLocal = Depends(get_db)):
         raise HTTPException(status_code=404, detail=f"City with id {city_id} not found")
 
     return city
+
+
+@router.put("/city/{city_id}/", response_model=schemas.CityRead)
+def update_city(city_id: int, city: schemas.CityUpdate, db: SessionLocal = Depends(get_db)):
+    updated_city = crud.update_city(db, city_id, city)
+
+    if not updated_city:
+        raise HTTPException(status_code=404, detail=f"City with id {city_id} not found")
+
+    return updated_city
