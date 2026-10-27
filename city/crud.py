@@ -27,3 +27,7 @@ def delete_city(db: Session, city_id: int):
     db.commit()
 
     return db_city
+
+
+def get_city_detail(db: Session, city_id: int):
+    return db.query(models.DBCity).filter(models.DBCity.id == city_id).first()

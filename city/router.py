@@ -37,3 +37,13 @@ def delete_city(city_id: int, db: SessionLocal = Depends(get_db)):
         )
 
     return city_to_delete
+
+
+@router.get("/city/{city_id}/", response_model=schemas.CityRead)
+def get_city_detail(city_id: int, db: SessionLocal = Depends(get_db)):
+    city = crud.get_city_detail(db, city_id)
+
+    if not city:
+        raise HTTPException(status_code=404, detail=f"City with id {city_id} not found")
+
+    return city
